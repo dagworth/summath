@@ -12,7 +12,8 @@
       devShells.${system}.default = pkgs.mkShell {
         nativeBuildInputs = [
           pkgs.cmake
-          pkgs.gcc ];
+          pkgs.gcc
+        ];
       };
     };
 }

@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
-project(qt_test LANGUAGES CXX)
+project(summath LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(qt_test src/main.cpp)
+add_executable(summath src/main.cpp)
