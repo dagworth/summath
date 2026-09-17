@@ -9,5 +9,9 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-add_executable(summath src/main.cpp)
+add_executable(summath
+    src/main.cpp
+    src/solve.cpp
+    src/calc/lexer.cpp
+)
 target_link_libraries(summath PRIVATE Qt6::Widgets)

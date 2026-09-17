@@ -1,0 +1,15 @@
+x=12
+x^2
+
+y=x%3
+
+for 5
+y=y*.995
+end
+
+i=12
+
+while i > 2
+i = i - 1
+x = x * .95
+end
