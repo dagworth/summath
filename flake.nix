@@ -13,6 +13,10 @@
         nativeBuildInputs = [
           pkgs.cmake
           pkgs.gcc
+          pkgs.qt6.wrapQtAppsHook
+        ];
+        buildInputs = [
+          pkgs.qt6.qtbase
         ];
       };
     };
