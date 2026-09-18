@@ -14,5 +14,5 @@ string solve(const string &str){
 	// 	lexed << lex(line) << '\n';
 	// }
 
-	return "";
+	return to_string(lexed.size());
 }

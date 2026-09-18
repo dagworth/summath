@@ -11,16 +11,30 @@ enum class TokenType {
     While,
     Bool,
     Comparator, // < > >= && || !=
-    Assign, //= ++ += -- -= /= %= *=
+    Assign, //=
     If,
     End,
     EndLine,
+
     Sin,
     Cos,
     Pi,
+
     DegToRad,
     RadToDeg,
-    AssignAdd
+
+    AssignAdd,
+    AssignSub,
+    AssignDiv,
+    AssignMul,
+
+    AssignAddOne,
+    AssignSubOne,
+
+    Neg,
+    Add,
+    Div,
+    Mul,
 };
 
 struct Token {
