@@ -43,14 +43,14 @@ vector<Token> lex(const string &str) {
 
     while (lexer.next() != '\0') {
 
-        // if(is_digit(lexer.cur)){
-        //     int start =
-        //     while(is_digit(lexer.peek)){
-        //         lexer.next();
-        //     }
-
-        // }
-
+        if(is_digit(lexer.cur)){
+            int start = lexer.index;
+            while(is_digit(lexer.peek)){
+                lexer.next();
+            }
+            tokens.emplace_back(TokenType::Number,  lexer.str.substr(start, lexer.index - start + 1));
+            continue;
+        }
 
         if(lexer.cur == '+'){
             if(lexer.peek == '+'){
