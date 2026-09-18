@@ -7,12 +7,13 @@
 using namespace std;
 
 string solve(const string &str){
-	// stringstream input(str);
 	vector<Token> lexed = lex(str);
 
-	// while (getline(input, line, '\n')) {
-	// 	lexed << lex(line) << '\n';
-	// }
+	int result = system("clear");
+
+	for (const Token &token : lexed) {
+		cout << "token: " << token.value << "\n";
+	}
 
 	return to_string(lexed.size());
 }

@@ -1,15 +1,29 @@
 x=12
 x^2
 
+a=1
+
+b=1
+
 y=x%3
 
 for 5
 y=y*.995
 end
 
+def hi()
+	qwe()
+end
+
+if hi then
+
+end
+
 i=12
 
-while i > 2
+while i > 2 do
 i = i - 1
 x = x * .95
 end
+
+4abc

@@ -4,17 +4,17 @@
 
 enum class TokenType {
     Number,
-    Operater, //+,-,/,*
-    Identifier, //variable
+    Identifier,
+
     Function,
     For,
     While,
     Bool,
-    Comparator, // < > >= && || !=
-    Assign, //=
     If,
     End,
     EndLine,
+    Do,
+    Then,
 
     Sin,
     Cos,
@@ -27,6 +27,8 @@ enum class TokenType {
     AssignSub,
     AssignDiv,
     AssignMul,
+    AssignMod,
+    AssignPow,
 
     AssignAddOne,
     AssignSubOne,
@@ -35,6 +37,19 @@ enum class TokenType {
     Add,
     Div,
     Mul,
+    Mod,
+    Pow,
+
+    LParen,
+    RParen,
+
+    Equals,
+    Assign,
+
+    CompareAnd,
+    CompareOr,
+    CompareNAnd,
+    Not
 };
 
 struct Token {
