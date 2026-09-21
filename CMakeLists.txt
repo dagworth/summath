@@ -13,5 +13,6 @@ add_executable(summath
     src/main.cpp
     src/solve.cpp
     src/calc/lexer.cpp
+    src/calc/interpreter.cpp
 )
 target_link_libraries(summath PRIVATE Qt6::Widgets)

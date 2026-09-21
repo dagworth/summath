@@ -13,8 +13,10 @@ const unordered_map<string, TokenType> keywords = {
     {"if",  TokenType::If},
     {"for",  TokenType::For},
     {"do",  TokenType::Do},
-    {"do",  TokenType::Then},
+    {"true", TokenType::True},
+    {"false", TokenType::False},
     {"end",  TokenType::End},
+    {"def", TokenType::Def},
     {"degtorad",  TokenType::DegToRad},
     {"radtodeg",  TokenType::RadToDeg},
 };
@@ -28,16 +30,10 @@ struct Lexer {
 
     explicit Lexer(const string &str) : str(str) {}
 
-    char next() {
-        do {
-            index++;
-            cur = index < str.length() ? str[index] : '\0';
-        } while (cur == ' ' || cur == '\t');
-        int fake_index = index;
-        do {
-            fake_index++;
-            peek = fake_index < str.length() ? str[fake_index] : '\0';
-        } while (peek == ' ' || peek == '\t');
+    char next(bool skip = true) {
+        index++;
+        cur = index < str.length() ? str[index] : '\0';
+        peek = index+1 < str.length() ? str[index+1] : '\0';
         return cur;
     }
 
@@ -64,11 +60,14 @@ bool is_digit(char c){
         case '7':
         case '8':
         case '9':
-        case '.':
             return true;
         default:
             return false;
     }
+}
+
+bool is_number(char c){
+    return is_digit(c) || c == '.';
 }
 
 bool is_alpha(char c){
@@ -110,15 +109,18 @@ vector<Token> lex(const string &str) {
     Lexer lexer(str);
 
     while (lexer.next() != '\0') {
+        if(lexer.cur == ' ' || lexer.cur == '\t'){
+            continue;
+        }
 
         if(lexer.cur == '\n'){
             tokens.emplace_back(TokenType::EndLine, "endline");
             continue;
         }
 
-        if(is_digit(lexer.cur)){
+        if(is_number(lexer.cur)){
             int start = lexer.index;
-            while(is_digit(lexer.peek)){
+            while(is_number(lexer.peek)){
                 lexer.next();
             }
             tokens.emplace_back(TokenType::Number,  lexer.str.substr(start, lexer.index - start + 1));
@@ -127,8 +129,8 @@ vector<Token> lex(const string &str) {
 
         if(is_alpha(lexer.cur)){
             int start = lexer.index;
-            while(is_alpha(lexer.peek)){
-                lexer.next();
+            while(is_alpha(lexer.peek) || is_digit(lexer.peek)){
+                lexer.next(false);
             }
             string word = lexer.str.substr(start, lexer.index - start + 1);
 
@@ -141,8 +143,10 @@ vector<Token> lex(const string &str) {
                     word = word.substr(potential_id.length(),word.length()-potential_id.length());
                     potential_id = lexer.check_if_id(word);
                 }
-                if(word != "" && lexer.peek == '=' && !lexer.ids.contains(word)){
-                    lexer.ids.insert(word);
+                if(word != ""){
+                    if(lexer.peek == '=' && !lexer.ids.contains(word)){
+                        lexer.ids.insert(word);
+                    }
                     tokens.emplace_back(TokenType::Identifier,  word);
                 }
             }
@@ -244,6 +248,11 @@ vector<Token> lex(const string &str) {
         if(lexer.cur == '|' && lexer.peek == '|'){
             tokens.emplace_back(TokenType::CompareOr,  "||");
             lexer.next();
+            continue;
+        }
+
+        if(lexer.cur == ','){
+            tokens.emplace_back(TokenType::Comma,  ",");
             continue;
         }
 

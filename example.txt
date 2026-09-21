@@ -1,29 +1,32 @@
-x=12
-x^2
+{scope} (dependency) (dependent)
 
-a=1
+x=12				{} ()
+y=8				{x} ()
+z=9				{x y}  ()
 
-b=1
+p=xyz				{x y z} (x y z)
 
-y=x%3
-
-for 5
-y=y*.995
+for p do {x y z p} (p)
+	scoped = 10		{x y z p} (p)
+	z++			{x y z p scoped} (z p)
+	y++			{x y z p scoped} (y p)
+	x+=scoped			{x y z p scoped} (x p scoped)
 end
 
-def hi()
-	qwe()
+if p > 10 then			{x y z p} (p)
+	p-=5				{x y z p} (p)
+	x-=1			{x y z p} (x p)
 end
 
-if hi then
-
+def hi(var1,var2,var3)
+	var3-=12			{x y z p var1, var2, var3} (var3)
+	var2+=x			{x y z p var1, var2, var3} (var2 x)
+	x/=2			{x y z p var1, var2, var3} (x)
+	p+=var1			{x y z p var1, var2, var3} (p var1)
+	return var1*var2*var3	{x y z p var1, var2, var3} (var1 var2 var3)
 end
 
-i=12
-
-while i > 2 do
-i = i - 1
-x = x * .95
+for x do				{x y z p} (x)
+	x-=p			{x y z p} (x p)
+	hi(x,y,z)			{x y z p} (x y z hi)
 end
-
-4abc

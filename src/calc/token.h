@@ -6,7 +6,7 @@ enum class TokenType {
     Number,
     Identifier,
 
-    Function,
+    Def,
     For,
     While,
     Bool,
@@ -19,6 +19,9 @@ enum class TokenType {
     Sin,
     Cos,
     Pi,
+
+    True,
+    False,
 
     DegToRad,
     RadToDeg,
@@ -49,7 +52,9 @@ enum class TokenType {
     CompareAnd,
     CompareOr,
     CompareNAnd,
-    Not
+    Not,
+
+    Comma
 };
 
 struct Token {
