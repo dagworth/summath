@@ -7,10 +7,7 @@ using namespace std;
 
 struct Interpreter {
     const vector<Token> tokens;
-    unordered_map<string,double> ids = {};
-//     unordered_map<string,Function> functions = {};
     size_t index = -1;
-
     explicit Interpreter(const vector<Token> &tokens) : tokens(tokens) {}
 };
 

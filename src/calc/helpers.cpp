@@ -1,6 +1,7 @@
 #include "token.h"
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -60,7 +61,6 @@ bool is_alpha(char c){
     }
 }
 
-
 const unordered_map<string, TokenType> keywords = {
     {"sin", TokenType::Sin},
     {"cos", TokenType::Cos},
@@ -83,3 +83,21 @@ bool is_keyword(string str){
 TokenType keyword_to_token(string str){
      return keywords.at(str);
 }
+
+bool has_assignment(vector<Token> tokens){
+     for (const Token& t : tokens) {
+          switch(t.type) {
+               case TokenType::Assign:
+               case TokenType::AssignAdd:
+               case TokenType::AssignAddOne:
+               case TokenType::AssignDiv:
+               case TokenType::AssignMod:
+               case TokenType::AssignMul:
+               case TokenType::AssignPow:
+               case TokenType::AssignSub:
+               case TokenType::AssignSubOne:
+                    return true;
+          }
+     };
+     return false;
+};
