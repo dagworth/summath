@@ -13,6 +13,5 @@ struct Interpreter {
 
 string interpret(const std::vector<Token> &tokens) {
      Interpreter interpreter(tokens);
-
      return "ur mom";
 }

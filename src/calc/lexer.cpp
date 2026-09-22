@@ -217,18 +217,8 @@ struct Lexer {
 
 vector<Token> lex(const string &str) {
     Lexer lexer(str);
-
     while (lexer.next() != '\0') {
         lexer.tokenize();
     }
-
-    // int line = 0;
-    // for (Token &token : tokens) {
-    //     token.line = line;
-    //     if (token.type == TokenType::EndLine) {
-    //         line++;
-    //     }
-    // }
-
     return lexer.tokens;
 }

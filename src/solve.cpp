@@ -12,7 +12,6 @@ void sync(Line &line, int index, const string &text, bool changed) {
 	line.index = index;
 	line.text = text;
 	line.changed = changed;
-	//need to use changed in the future
 }
 
 string solve(const string &str){
@@ -25,7 +24,6 @@ string solve(const string &str){
 }
 
 void eval_lines(vector<Line*> &lines) {
-	//vector<Token> tokens;
 	for (Line *line : lines) {
 		if (line->changed) {
 			line->tokens = lex(line->text);
@@ -35,7 +33,7 @@ void eval_lines(vector<Line*> &lines) {
 			if(line->assign){
 				//dependency chain cascade here
 			} else {
-
+				
 			}
 		}
 	}

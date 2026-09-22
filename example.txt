@@ -1,4 +1,4 @@
-{scope} (dependency) (dependent)
+{scope} (dependency)
 
 x=12				{} ()
 y=8				{x} ()
@@ -8,14 +8,14 @@ p=xyz				{x y z} (x y z)
 
 for p do {x y z p} (p)
 	scoped = 10		{x y z p} (p)
-	z++			{x y z p scoped} (z p)
-	y++			{x y z p scoped} (y p)
+	z++					{x y z p scoped} (z p)
+	y++					{x y z p scoped} (y p)
 	x+=scoped			{x y z p scoped} (x p scoped)
 end
 
 if p > 10 do			{x y z p} (p)
-	p-=5				{x y z p} (p)
-	x-=1			{x y z p} (x p)
+	p-=5					{x y z p} (p)
+	x-=1					{x y z p} (x p)
 else 
 
 end
