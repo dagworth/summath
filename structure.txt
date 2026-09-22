@@ -1,0 +1,42 @@
+main tells solve the diffed lines, even if theres new lines pushing everything down or a line disappearing
+This means that in solve, there will be structs like Line that holds all tokens with scopes and dependencies.
+ex:
+     x+=1 -> x+=2
+     def hi(var1,var2) -> def bye(var1,var2)
+     p = xy -> p = xy
+
+solve tells the lexer to look at diffed lines
+ex:
+     (x) (+=) (1) -> (x) (+=) (2)
+
+if there is any type of assignment involved, then label the line and variable to be changed.
+if not, just eval the line and nothing else changes.
+starting from the line that changed, you will have to go down and check for whichever line has the dependency of the changed variable (it can chain into multiple variables)
+
+Functions can change too. Variables disappearing (renaming) also will cause this cascade.
+
+solve tells interpreter about the new tokens
+interpreter should only be given at most one line at a time and the scope of the line.
+
+interpreter calls solve that it needs more until it doesnt anymore.
+def hi(var1,var2,var3)             interpreter asks for another line
+	p+=var1                            interpreter asks for another line
+	return var1*var2*var3         interpreter asks for another line
+end                                          function finished
+
+this will only need to happen one time
+
+if a then
+     
+end
+
+functions should not be in a scope, functions should be scoped globally
+
+line: {
+     index: 10
+     tokens: {}
+     scope: {
+          x:12,
+          y:19
+     }
+}

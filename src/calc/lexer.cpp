@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "helpers.h"
 #include "token.h"
 #include <vector>
 #include <unordered_map>
@@ -6,22 +7,8 @@
 
 using namespace std;
 
-const unordered_map<string, TokenType> keywords = {
-    {"sin", TokenType::Sin},
-    {"cos", TokenType::Cos},
-    {"pi",  TokenType::Pi},
-    {"if",  TokenType::If},
-    {"for",  TokenType::For},
-    {"do",  TokenType::Do},
-    {"true", TokenType::True},
-    {"false", TokenType::False},
-    {"end",  TokenType::End},
-    {"def", TokenType::Def},
-    {"degtorad",  TokenType::DegToRad},
-    {"radtodeg",  TokenType::RadToDeg},
-};
-
 struct Lexer {
+    vector<Token> tokens;
     const string &str;
     unordered_set<string> ids = {};
     size_t index = -1;
@@ -46,226 +33,202 @@ struct Lexer {
         }
         return "";
     }
-};
 
-bool is_digit(char c){
-    switch (c) {
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            return true;
-        default:
-            return false;
-    }
-}
-
-bool is_number(char c){
-    return is_digit(c) || c == '.';
-}
-
-bool is_alpha(char c){
-    switch (c) {
-        case 'a':
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'f':
-        case 'g':
-        case 'h':
-        case 'i':
-        case 'j':
-        case 'k':
-        case 'l':
-        case 'm':
-        case 'n':
-        case 'o':
-        case 'p':
-        case 'q':
-        case 'r':
-        case 's':
-        case 't':
-        case 'u':
-        case 'v':
-        case 'w':
-        case 'x':
-        case 'y':
-        case 'z':
-            return true;
-        default:
-            return false;
-    }
-}
-
-vector<Token> lex(const string &str) {
-    vector<Token> tokens;
-    Lexer lexer(str);
-
-    while (lexer.next() != '\0') {
-        if(lexer.cur == ' ' || lexer.cur == '\t'){
-            continue;
+    void tokenize(){
+        if(cur == ' ' || cur == '\t'){
+            return;
         }
 
-        if(lexer.cur == '\n'){
+        if(cur == '\n'){
             tokens.emplace_back(TokenType::EndLine, "endline");
-            continue;
+            return;
         }
 
-        if(is_number(lexer.cur)){
-            int start = lexer.index;
-            while(is_number(lexer.peek)){
-                lexer.next();
+        if(is_number(cur)){
+            int start = index;
+            while(is_number(peek)){
+                next();
             }
-            tokens.emplace_back(TokenType::Number,  lexer.str.substr(start, lexer.index - start + 1));
-            continue;
+            tokens.emplace_back(TokenType::Number,  str.substr(start, index - start + 1));
+            return;
         }
 
-        if(is_alpha(lexer.cur)){
-            int start = lexer.index;
-            while(is_alpha(lexer.peek) || is_digit(lexer.peek)){
-                lexer.next(false);
+        if(is_alpha(cur)){
+            int start = index;
+            while(is_alpha(peek) || is_digit(peek)){
+                next(false);
             }
-            string word = lexer.str.substr(start, lexer.index - start + 1);
+            string word = str.substr(start, index - start + 1);
 
-            if(keywords.count(word)){
-                tokens.emplace_back(keywords.at(word),  word);
+            if(is_keyword(word)){
+                tokens.emplace_back(keyword_to_token(word),  word);
+                return;
             } else {
-                string potential_id = lexer.check_if_id(word);
+                string potential_id = check_if_id(word);
                 while(potential_id != ""){
-                    tokens.emplace_back(TokenType::Identifier,  "potential id " + potential_id);
+                    tokens.emplace_back(TokenType::Identifier,  potential_id);
                     word = word.substr(potential_id.length(),word.length()-potential_id.length());
-                    potential_id = lexer.check_if_id(word);
+                    potential_id = check_if_id(word);
                 }
                 if(word != ""){
-                    if(lexer.peek == '=' && !lexer.ids.contains(word)){
-                        lexer.ids.insert(word);
+                    if(peek == '=' && !ids.contains(word)){
+                        ids.insert(word);
                     }
                     tokens.emplace_back(TokenType::Identifier,  word);
                 }
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '('){
+        if(cur == '('){
             tokens.emplace_back(TokenType::LParen,  "(");
-            continue;
+            return;
         }
 
-        if(lexer.cur == ')'){
+        if(cur == ')'){
             tokens.emplace_back(TokenType::RParen,  ")");
-            continue;
+            return;
         }
 
-        if(lexer.cur == '+'){
-            if(lexer.peek == '+'){
+        if(cur == '+'){
+            if(peek == '+'){
                 tokens.emplace_back(TokenType::AssignAddOne,  "++");
-                lexer.next();
-            } else if (lexer.peek == '=') {
+                next();
+            } else if (peek == '=') {
                 tokens.emplace_back(TokenType::AssignAdd,  "+=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Add,  "+");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '-'){
-            if(lexer.peek == '-'){
+        if(cur == '-'){
+            if(peek == '-'){
                 tokens.emplace_back(TokenType::AssignSubOne,  "--");
-                lexer.next();
-            } else if (lexer.peek == '=') {
+                next();
+            } else if (peek == '=') {
                 tokens.emplace_back(TokenType::AssignSub,  "-=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Neg,  "-");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '/'){
-            if (lexer.peek == '=') {
+        if(cur == '/'){
+            if (peek == '=') {
                 tokens.emplace_back(TokenType::AssignDiv,  "/=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Div,  "/");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '*'){
-            if (lexer.peek == '=') {
+        if(cur == '*'){
+            if (peek == '=') {
                 tokens.emplace_back(TokenType::AssignMul,  "*=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Mul,  "*");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '%'){
-            if (lexer.peek == '=') {
+        if(cur == '%'){
+            if (peek == '=') {
                 tokens.emplace_back(TokenType::AssignMod,  "%=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Mod,  "%");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '^'){
-            if (lexer.peek == '=') {
+        if(cur == '^'){
+            if (peek == '=') {
                 tokens.emplace_back(TokenType::AssignPow,  "^=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Pow,  "^");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '='){
-            if (lexer.peek == '=') {
+        if(cur == '='){
+            if (peek == '=') {
                 tokens.emplace_back(TokenType::Equals,  "==");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Assign,  "=");
             }
-            continue;
+            return;
         }
 
-        if(lexer.cur == '&' && lexer.peek == '&'){
+        if(cur == '>'){
+            if (peek == '=') {
+                tokens.emplace_back(TokenType::GreaterEq,  ">=");
+                next();
+            } else {
+                tokens.emplace_back(TokenType::Greater,  ">");
+            }
+            return;
+        }
+
+        if(cur == '<'){
+            if (peek == '=') {
+                tokens.emplace_back(TokenType::LessEq,  "<=");
+                next();
+            } else {
+                tokens.emplace_back(TokenType::Less,  "<");
+            }
+            return;
+        }
+
+        if(cur == '&' && peek == '&'){
             tokens.emplace_back(TokenType::CompareAnd,  "&&");
-            lexer.next();
-            continue;
+            next();
+            return;
         }
 
-        if(lexer.cur == '|' && lexer.peek == '|'){
+        if(cur == '|' && peek == '|'){
             tokens.emplace_back(TokenType::CompareOr,  "||");
-            lexer.next();
-            continue;
+            next();
+            return;
         }
 
-        if(lexer.cur == ','){
+        if(cur == ','){
             tokens.emplace_back(TokenType::Comma,  ",");
-            continue;
+            return;
         }
 
-        if(lexer.cur == '!'){
-            if(lexer.peek == '='){
+        if(cur == '!'){
+            if(peek == '='){
                 tokens.emplace_back(TokenType::CompareNAnd,  "!=");
-                lexer.next();
+                next();
             } else {
                 tokens.emplace_back(TokenType::Not,  "!");
             }
-            continue;
+            return;
         }
     }
+};
 
-    return tokens;
+vector<Token> lex(const string &str) {
+    Lexer lexer(str);
+
+    while (lexer.next() != '\0') {
+        lexer.tokenize();
+    }
+
+    // int line = 0;
+    // for (Token &token : tokens) {
+    //     token.line = line;
+    //     if (token.type == TokenType::EndLine) {
+    //         line++;
+    //     }
+    // }
+
+    return lexer.tokens;
 }

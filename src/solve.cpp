@@ -1,10 +1,18 @@
+#include "solve.h"
 #include "calc/lexer.h"
+#include "calc/interpreter.h"
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
 using namespace std;
+
+void sync(Line &line, int index, const string &text, bool changed) {
+    line.index = index;
+    line.text = text;
+    line.changed = changed;
+    //need to use changed in the future
+}
 
 string solve(const string &str){
 	vector<Token> lexed = lex(str);
@@ -12,5 +20,5 @@ string solve(const string &str){
 	for (const Token &token : lexed) {
 		cout << "token: " << token.value << "\n";
 	}
-	return to_string(lexed.size());
+	return interpret(lexed);
 }

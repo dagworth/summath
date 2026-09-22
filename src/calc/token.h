@@ -49,6 +49,11 @@ enum class TokenType {
     Equals,
     Assign,
 
+    Greater,
+    GreaterEq,
+    Less,
+    LessEq,
+
     CompareAnd,
     CompareOr,
     CompareNAnd,
@@ -60,4 +65,5 @@ enum class TokenType {
 struct Token {
     TokenType type;
     std::string value;
+    // int line = 0;
 };
