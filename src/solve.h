@@ -5,24 +5,23 @@
 #include <unordered_set>
 #include <vector>
 #include "calc/token.h"
+#include "calc/scope.h"
 
-struct Scope {
-     std::unordered_map<std::string,double> variables;
-     std::unordered_set<std::string> dependencies;
-};
+using namespace std;
 
 struct Line {
      int index = -1;
-     std::string text;
-     std::vector<Token> tokens;
+     string text;
+     vector<Token> tokens;
      bool changed = true;
      bool assign = true;
-     std::string answer;
+     string answer;
      Scope scope;
+     int looped = 1;
 };
 
-void sync(Line &line, int index, const std::string &text, bool changed);
+void sync(Line &line, int index, const string &text, bool changed);
 
-std::string solve(const std::string &input);
+string solve(const string &input);
 
-void eval_lines(std::vector<Line*> &lines);
+void eval_lines(vector<Line*> &lines);

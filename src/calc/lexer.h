@@ -4,4 +4,6 @@
 #include <vector>
 #include "token.h"
 
-std::vector<Token> lex(const std::string &line);
+using namespace std;
+
+vector<Token> lex(const string &line);

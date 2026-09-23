@@ -3,5 +3,8 @@
 #include <string>
 #include <vector>
 #include "token.h"
+#include "scope.h"
 
-std::string interpret(const std::vector<Token> &tokens);
+using namespace std;
+
+string interpret(const vector<Token> &tokens, Scope &scope);

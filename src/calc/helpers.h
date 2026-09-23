@@ -4,9 +4,11 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 bool is_digit(char c);
 bool is_number(char c);
 bool is_alpha(char c);
-bool is_keyword(std::string str);
-TokenType keyword_to_token(std::string str);
-bool has_assignment(std::vector<Token> tokens);
+bool is_keyword(string str);
+TokenType keyword_to_token(string str);
+bool has_assignment(vector<Token> tokens);
