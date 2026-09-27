@@ -3,6 +3,8 @@
 #include <string>
 
 enum class TokenType {
+    None,
+    
     Number,
     Identifier,
 

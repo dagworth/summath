@@ -71,9 +71,7 @@ int main(int argc, char *argv[]) {
     });
 
     // QObject::connect(input, &QPlainTextEdit::textChanged, [input, label]() {
-    //     std::string result = solve(input->toPlainText().toStdString());
-    //     QString a = QString::fromStdString(result);
-    //     label->setText(a);
+    //     test_lex(input->toPlainText().toStdString());
     // });
 
     window.show();

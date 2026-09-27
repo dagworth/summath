@@ -84,19 +84,26 @@ TokenType keyword_to_token(string str){
      return keywords.at(str);
 }
 
+bool is_assignment(TokenType t){
+    switch(t) {
+        case TokenType::Assign:
+        case TokenType::AssignAdd:
+        case TokenType::AssignAddOne:
+        case TokenType::AssignDiv:
+        case TokenType::AssignMod:
+        case TokenType::AssignMul:
+        case TokenType::AssignPow:
+        case TokenType::AssignSub:
+        case TokenType::AssignSubOne:
+            return true;
+    }
+     return false;
+};
+
 bool has_assignment(vector<Token> tokens){
      for (const Token& t : tokens) {
-          switch(t.type) {
-               case TokenType::Assign:
-               case TokenType::AssignAdd:
-               case TokenType::AssignAddOne:
-               case TokenType::AssignDiv:
-               case TokenType::AssignMod:
-               case TokenType::AssignMul:
-               case TokenType::AssignPow:
-               case TokenType::AssignSub:
-               case TokenType::AssignSubOne:
-                    return true;
+          if(is_assignment(t.type)){
+            return true;
           }
      };
      return false;

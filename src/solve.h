@@ -25,3 +25,5 @@ void sync(Line &line, int index, const string &text, bool changed);
 string solve(const string &input);
 
 void eval_lines(vector<Line*> &lines);
+
+void test_lex(const string &str);
