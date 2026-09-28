@@ -58,13 +58,11 @@ int main(int argc, char *argv[]) {
         }
 
         eval_lines(lines);
-        //int a = system("clear");
 
         stringstream result;
         for (QTextBlock b = main_doc->begin(); b.isValid(); b = b.next()) {
             LineData *data = static_cast<LineData*>(b.userData());
             result << data->line.answer << '\n';
-            //cout << data->line.answer << '\n';
         }
 
         label->setText(QString::fromStdString(result.str()));

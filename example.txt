@@ -27,5 +27,24 @@ if y == 10 do       {scope down}   (y)
      x+=p           {x:24}         (x p)
 end                 {scope up}
 
+x = if y == 2 do 10 else 9 end
+
+i think its very easy to, when looking to make_full_scope, to look at which block you are in (if,def,for). 
+We can use the scope up and scope down as shown above
+
 problem:
-scope is weird, so its separated by end, there is always just a scope change aat the end of an end and start of if/for/def
+double nested stuff
+if x == 2 do
+     if y > 2 do
+          p+=12
+     end
+else
+     for i, 7 > p do
+          if i%2 == 0 do
+               p+=i
+          end
+     end
+end
+
+each line should only depend on the block right above, blocks can rely on other blocks
+should prob work
