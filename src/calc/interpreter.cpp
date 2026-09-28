@@ -112,8 +112,8 @@ struct Interpreter {
         if(get_token_type(index) == TokenType::Identifier && is_assignment(get_token_type(index+1))){
             string n = tokens[index].value;
             index += 2;
-            scope.variables[n] = eval(in_parens);
-            return scope.variables[n];
+            local_scope.variables[n] = eval(in_parens);
+            return local_scope.variables[n];
         }
 
         if(!in_parens) balance_L_parens(); //this kinda runs like a lot of times but whatever, its o(n)
