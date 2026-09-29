@@ -12,16 +12,6 @@
 
 using namespace std;
 
-string format_number(double value) {
-    if (value == (long long)value) {
-        return to_string((long long)value);
-    }
-    string str = to_string(value);
-    while (str.back() == '0') str.pop_back();
-    if (str.back() == '.') str.pop_back();
-    return str;
-}
-
 struct Interpreter {
     vector<Token> tokens;
     Scope &local_scope;
@@ -127,7 +117,7 @@ string interpret(const vector<Token> &tokens, Scope &local_scope, Scope &scope) 
     }
     try {
         Interpreter interpreter(tokens,local_scope, scope);
-        return format_number(interpreter.eval());
+        return to_string(interpreter.eval());
     } catch (const exception &e) {
         return e.what();
     }
